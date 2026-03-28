@@ -2,11 +2,11 @@ name: CWO SPC Daily Outlook Emailer
 
 on:
   schedule:
-    # Runs every day at 13:00 UTC (8 AM CDT / 7 AM CST) — after SPC issues Day 1
+    # 8:00 AM CDT (March-Nov) is 13:00 UTC
     - cron: "0 13 * * *"
-    # Also runs at 19:00 UTC (2 PM CDT) for afternoon update
+    # 2:00 PM CDT (March-Nov) is 19:00 UTC
     - cron: "0 19 * * *"
-  workflow_dispatch:  # allows manual trigger from GitHub Actions tab
+  workflow_dispatch:  # allows manual trigger for testing
 
 jobs:
   send-outlook-email:
@@ -23,6 +23,8 @@ jobs:
 
       - name: Run CWO SPC Emailer
         env:
+          # Setting the runner to Central Time for your subject line
+          TZ: "America/Chicago"
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_PASS: ${{ secrets.GMAIL_PASS }}
           TO_EMAIL:   ${{ secrets.TO_EMAIL }}
