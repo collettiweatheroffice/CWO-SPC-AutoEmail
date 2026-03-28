@@ -7,6 +7,7 @@ Automatically emails a formatted SPC outlook brief every morning and afternoon c
 
 ##  LEGAL & PROPRIETARY NOTICE
 **Copyright (c) 2026 Jonathan Colletti. All Rights Reserved.**
+Please see the LICENSE for information on copyright and use.
 
 This repository and its source code are the exclusive property of **Jonathan Colletti**. The **Colletti Weather Office** (owned and operated by Jonathan Colletti) has the exclusive right to use, modify, and broadcast this software.
 
