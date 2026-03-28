@@ -1,5 +1,8 @@
 name: CWO SPC Daily Outlook Emailer
 
+permissions:
+  contents: read
+
 on:
   schedule:
     # 8:00 AM CDT (March-Nov) is 13:00 UTCname: CWO SPC Daily Outlook Emailer
