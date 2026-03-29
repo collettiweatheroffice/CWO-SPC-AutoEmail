@@ -279,14 +279,14 @@ def img_block(cid, alt, fallback_url):
          style="max-width:100%;height:auto;border-radius:6px;
                 border:1px solid #ddd;display:block;margin-top:8px;" />
     <p style="font-size:11px;color:#aaa;margin:6px 0 0;text-align:right;">
-      <a href="{fallback_url}" style="color:#1a3a5c;">View on SPC ↗</a>
+      <a href="{fallback_url}" style="color:#1a3a5c;">View on SPC &#8599;</a>
     </p>"""
 
 
 def img_fallback(fallback_url, label):
     return f"""
     <p style="color:#888;font-style:italic;font-size:13px;margin:4px 0;">
-      Image unavailable — <a href="{fallback_url}" style="color:#1a3a5c;">View {label} on SPC ↗</a>
+      Image unavailable — <a href="{fallback_url}" style="color:#1a3a5c;">View {label} on SPC &#8599;</a>
     </p>"""
 
 
@@ -383,17 +383,17 @@ def build_html(day1_text, day2_text, day3_text, cwo_risks, mds,
       <tr style="background:#eef1f8;">
         <td style="padding:10px 14px;font-weight:700;color:#1a1f5e;font-size:14px;width:120px;">Day 1 Outlook</td>
         <td style="padding:10px 14px;font-size:14px;">{nat1}</td>
-        <td style="padding:6px 14px;text-align:right;"><a href="{OUTLOOK_PAGES[1]}" style="font-size:11px;color:#1a3a5c;text-decoration:none;">View ↗</a></td>
+        <td style="padding:6px 14px;text-align:right;"><a href="{OUTLOOK_PAGES[1]}" style="font-size:11px;color:#1a3a5c;text-decoration:none;">View &#8599;</a></td>
       </tr>
       <tr>
         <td style="padding:10px 14px;font-weight:700;color:#1a1f5e;font-size:14px;">Day 2 Outlook</td>
         <td style="padding:10px 14px;font-size:14px;">{nat2}</td>
-        <td style="padding:6px 14px;text-align:right;"><a href="{OUTLOOK_PAGES[2]}" style="font-size:11px;color:#1a3a5c;text-decoration:none;">View ↗</a></td>
+        <td style="padding:6px 14px;text-align:right;"><a href="{OUTLOOK_PAGES[2]}" style="font-size:11px;color:#1a3a5c;text-decoration:none;">View &#8599;</a></td>
       </tr>
       <tr style="background:#eef1f8;">
         <td style="padding:10px 14px;font-weight:700;color:#1a1f5e;font-size:14px;">Day 3 Outlook</td>
         <td style="padding:10px 14px;font-size:14px;">{nat3}</td>
-        <td style="padding:6px 14px;text-align:right;"><a href="{OUTLOOK_PAGES[3]}" style="font-size:11px;color:#1a3a5c;text-decoration:none;">View ↗</a></td>
+        <td style="padding:6px 14px;text-align:right;"><a href="{OUTLOOK_PAGES[3]}" style="font-size:11px;color:#1a3a5c;text-decoration:none;">View &#8599;</a></td>
       </tr>
     </table>""")}
 
@@ -437,13 +437,13 @@ def build_html(day1_text, day2_text, day3_text, cwo_risks, mds,
     <pre style="background:#f4f6f8;padding:14px;font-size:12px;white-space:pre-wrap;
                 border-radius:6px;margin:0;color:#222;line-height:1.65;font-family:monospace;">{summary}</pre>
     <p style="font-size:12px;color:#888;margin:8px 0 0;">
-      Full product: <a href="{OUTLOOK_PAGES[1]}" style="color:#1a3a5c;">SPC Day 1 Outlook ↗</a>
+      Full product: <a href="{OUTLOOK_PAGES[1]}" style="color:#1a3a5c;">SPC Day 1 Outlook &#8599;</a>
     </p>""")}
 
   {card("🔍 Active Mesoscale Discussions", f"""
     {md_html}
     <p style="font-size:12px;color:#888;margin:10px 0 0;">
-      <a href="{SPC_BASE}/products/md/" style="color:#1a3a5c;">All active MDs on SPC ↗</a>
+      <a href="{SPC_BASE}/products/md/" style="color:#1a3a5c;">All active MDs on SPC &#8599;</a>
     </p>""")}
 
   {card("🔗 SPC Links", btns)}
