@@ -14,7 +14,7 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from datetime import datetime, timezone
 
-# ── CONFIG ─────────────────────────────────────────────────────────────────────
+# -- CONFIG ---------------------------------------------------------------------
 GMAIL_USER = os.environ["GMAIL_USER"]
 GMAIL_PASS = os.environ["GMAIL_PASS"]
 TO_EMAIL   = os.environ.get("TO_EMAIL", GMAIL_USER)
@@ -55,18 +55,18 @@ FEATURE_BASE = "https://mapservices.weather.noaa.gov/vector/rest/services/outloo
 
 CAT_ORDER  = ["HIGH", "MDT", "ENH", "SLGT", "MRGL", "TSTM"]
 CAT_LABELS = {
-    "HIGH": "🔴 High Risk",
-    "MDT":  "🟠 Moderate Risk",
-    "ENH":  "🟡 Enhanced Risk",
-    "SLGT": "🟡 Slight Risk",
-    "MRGL": "🟢 Marginal Risk",
-    "TSTM": "⚪ General Thunderstorms",
+    "HIGH": "&#128308; High Risk",
+    "MDT":  "&#128992; Moderate Risk",
+    "ENH":  "&#128993; Enhanced Risk",
+    "SLGT": "&#128993; Slight Risk",
+    "MRGL": "&#128994; Marginal Risk",
+    "TSTM": "&#9898; General Thunderstorms",
 }
 PROB_VALUES = {
     "2": 2, "5": 5, "10": 10, "15": 15, "30": 30, "45": 45, "60": 60,
     "0.02": 2, "0.05": 5, "0.10": 10, "0.15": 15, "0.30": 30, "0.45": 45, "0.60": 60,
 }
-# ───────────────────────────────────────────────────────────────────────────────
+# -------------------------------------------------------------------------------
 
 
 def fetch_text(url, timeout=20):
@@ -92,7 +92,7 @@ def fetch_json(url):
     return json.loads(fetch_text(url))
 
 
-# ── OUTLOOK TEXT ───────────────────────────────────────────────────────────────
+# -- OUTLOOK TEXT ---------------------------------------------------------------
 
 def get_outlook_text(day=1):
     try:
@@ -115,17 +115,17 @@ def get_outlook_text(day=1):
 def get_national_category(text):
     upper = text.upper()
     for kw, label in [
-        ("PARTICULARLY DANGEROUS SITUATION", "🔴 PDS — Particularly Dangerous Situation"),
-        ("HIGH RISK",     "🔴 High Risk"),
-        ("MODERATE RISK", "🟠 Moderate Risk"),
-        ("ENHANCED RISK", "🟡 Enhanced Risk"),
-        ("SLIGHT RISK",   "🟡 Slight Risk"),
-        ("MARGINAL RISK", "🟢 Marginal Risk"),
-        ("THUNDERSTORMS", "⚪ General Thunderstorms"),
+        ("PARTICULARLY DANGEROUS SITUATION", "&#128308; PDS -- Particularly Dangerous Situation"),
+        ("HIGH RISK",     "&#128308; High Risk"),
+        ("MODERATE RISK", "&#128992; Moderate Risk"),
+        ("ENHANCED RISK", "&#128993; Enhanced Risk"),
+        ("SLIGHT RISK",   "&#128993; Slight Risk"),
+        ("MARGINAL RISK", "&#128994; Marginal Risk"),
+        ("THUNDERSTORMS", "&#9898; General Thunderstorms"),
     ]:
         if kw in upper:
             return label
-    return "⚪ No Thunder / Below Threshold"
+    return "&#9898; No Thunder / Below Threshold"
 
 
 def extract_section(text, keyword):
@@ -139,7 +139,7 @@ def extract_section(text, keyword):
     return f"No {keyword.lower()} section found in this outlook."
 
 
-# ── IMAGE FETCHING ─────────────────────────────────────────────────────────────
+# -- IMAGE FETCHING -------------------------------------------------------------
 
 def fetch_convective_outlook_image():
     """
@@ -195,7 +195,7 @@ def fetch_thunderstorm_image():
     return None
 
 
-# ── CWO AREA RISK ──────────────────────────────────────────────────────────────
+# -- CWO AREA RISK --------------------------------------------------------------
 
 def query_layer(layer_id):
     envelope = f"{CWO_XMIN},{CWO_YMIN},{CWO_XMAX},{CWO_YMAX}"
@@ -221,7 +221,7 @@ def best_cat(feats):
     for lvl in CAT_ORDER:
         if lvl in found:
             return CAT_LABELS[lvl]
-    return "⚪ No Thunder / Below Threshold"
+    return "&#9898; No Thunder / Below Threshold"
 
 
 def best_prob(feats):
@@ -246,10 +246,10 @@ def get_cwo_risks():
     }
 
 
-# ── MESOSCALE DISCUSSIONS ──────────────────────────────────────────────────────
+# -- MESOSCALE DISCUSSIONS ------------------------------------------------------
 
 def get_active_mds():
-    """Scrape SPC MD page directly — most reliable source."""
+    """Scrape SPC MD page directly -- most reliable source."""
     results = []
     try:
         html  = fetch_text(f"{SPC_BASE}/products/md/")
@@ -270,7 +270,7 @@ def get_active_mds():
     return results
 
 
-# ── EMAIL BUILD ────────────────────────────────────────────────────────────────
+# -- EMAIL BUILD ----------------------------------------------------------------
 
 def img_block(cid, alt, fallback_url):
     """Inline image block with fallback link."""
@@ -286,7 +286,7 @@ def img_block(cid, alt, fallback_url):
 def img_fallback(fallback_url, label):
     return f"""
     <p style="color:#888;font-style:italic;font-size:13px;margin:4px 0;">
-      Image unavailable — <a href="{fallback_url}" style="color:#1a3a5c;">View {label} on SPC &#8599;</a>
+      Image unavailable -- <a href="{fallback_url}" style="color:#1a3a5c;">View {label} on SPC &#8599;</a>
     </p>"""
 
 
@@ -373,12 +373,12 @@ def build_html(day1_text, day2_text, day3_text, cwo_risks, mds,
     <h1 style="margin:0;color:#d4a843;font-size:20px;letter-spacing:1.5px;
                text-transform:uppercase;font-weight:700;">Daily SPC Outlook Brief</h1>
     <p style="margin:6px 0 2px;color:#8fa8d8;font-size:13px;">
-      NWS Chicago (LOT) &nbsp;·&nbsp; NWS Milwaukee (MKX) &nbsp;·&nbsp; NWS Quad Cities (DVN)
+      NWS Chicago (LOT) &nbsp;&middot;&nbsp; NWS Milwaukee (MKX) &nbsp;&middot;&nbsp; NWS Quad Cities (DVN)
     </p>
     <p style="margin:0;color:#5566aa;font-size:11px;">{now_utc}</p>
   </div>
 
-  {card("📊 National Categorical Risk", f"""
+  {card("&#128202; National Categorical Risk", f"""
     <table style="width:100%;border-collapse:collapse;">
       <tr style="background:#eef1f8;">
         <td style="padding:10px 14px;font-weight:700;color:#1a1f5e;font-size:14px;width:120px;">Day 1 Outlook</td>
@@ -397,56 +397,56 @@ def build_html(day1_text, day2_text, day3_text, cwo_risks, mds,
       </tr>
     </table>""")}
 
-  {card("📍 CWO Area Risk (LOT / MKX / DVN)", f"""
+  {card("&#128205; CWO Area Risk (LOT / MKX / DVN)", f"""
     <table style="width:100%;border-collapse:collapse;">
       <tr style="background:#eef1f8;">
         <td style="padding:10px 14px;font-weight:700;color:#1a1f5e;font-size:13px;width:120px;">Categorical</td>
         <td style="padding:10px 14px;font-size:13px;">{cwo_risks['cat']}</td>
       </tr>
       <tr>
-        <td style="padding:10px 14px;font-weight:700;color:#c0392b;font-size:13px;">🌪️ Tornado</td>
+        <td style="padding:10px 14px;font-weight:700;color:#c0392b;font-size:13px;">&#127754; Tornado</td>
         <td style="padding:10px 14px;font-size:13px;">{cwo_risks['torn']}</td>
       </tr>
       <tr style="background:#eef1f8;">
-        <td style="padding:10px 14px;font-weight:700;color:#2471a3;font-size:13px;">💨 Wind</td>
+        <td style="padding:10px 14px;font-weight:700;color:#2471a3;font-size:13px;">&#128168; Wind</td>
         <td style="padding:10px 14px;font-size:13px;">{cwo_risks['wind']}</td>
       </tr>
       <tr>
-        <td style="padding:10px 14px;font-weight:700;color:#1e8449;font-size:13px;">🧊 Hail</td>
+        <td style="padding:10px 14px;font-weight:700;color:#1e8449;font-size:13px;">&#129514; Hail</td>
         <td style="padding:10px 14px;font-size:13px;">{cwo_risks['hail']}</td>
       </tr>
     </table>
     <p style="font-size:11px;color:#bbb;margin:10px 0 0;">Based on SPC probability contours intersecting LOT/MKX/DVN bounding box.</p>""",
     border="#d4a843")}
 
-  {card("🗺️ Day 1 Convective Outlook Map", conv_img_html)}
+  {card("&#128506; Day 1 Convective Outlook Map", conv_img_html)}
 
-  {card("⛈️ Thunderstorm Outlook", tstm_img_html)}
+  {card("&#9928; Thunderstorm Outlook", tstm_img_html)}
 
-  {card("⚡ Day 1 Hazard Text", f"""
-    <p style="font-weight:700;color:#c0392b;font-size:13px;margin:0 0 4px;">🌪️ TORNADO</p>
+  {card("&#9889; Day 1 Hazard Text", f"""
+    <p style="font-weight:700;color:#c0392b;font-size:13px;margin:0 0 4px;">&#127754; TORNADO</p>
     {pre(torn_txt, '#c0392b', '#fdf2f0')}
-    <p style="font-weight:700;color:#2471a3;font-size:13px;margin:14px 0 4px;">💨 WIND</p>
+    <p style="font-weight:700;color:#2471a3;font-size:13px;margin:14px 0 4px;">&#128168; WIND</p>
     {pre(wind_txt, '#2471a3', '#eaf4fb')}
-    <p style="font-weight:700;color:#1e8449;font-size:13px;margin:14px 0 4px;">🧊 HAIL</p>
+    <p style="font-weight:700;color:#1e8449;font-size:13px;margin:14px 0 4px;">&#129514; HAIL</p>
     {pre(hail_txt, '#1e8449', '#eafaf1')}
-    <p style="font-weight:700;color:#6c3483;font-size:13px;margin:14px 0 4px;">⛈️ THUNDERSTORMS</p>
+    <p style="font-weight:700;color:#6c3483;font-size:13px;margin:14px 0 4px;">&#9928; THUNDERSTORMS</p>
     {pre(tstm_txt, '#6c3483', '#f5eef8')}""")}
 
-  {card("📋 Day 1 Outlook Full Text", f"""
+  {card("&#128203; Day 1 Outlook Full Text", f"""
     <pre style="background:#f4f6f8;padding:14px;font-size:12px;white-space:pre-wrap;
                 border-radius:6px;margin:0;color:#222;line-height:1.65;font-family:monospace;">{summary}</pre>
     <p style="font-size:12px;color:#888;margin:8px 0 0;">
       Full product: <a href="{OUTLOOK_PAGES[1]}" style="color:#1a3a5c;">SPC Day 1 Outlook &#8599;</a>
     </p>""")}
 
-  {card("🔍 Active Mesoscale Discussions", f"""
+  {card("&#128269; Active Mesoscale Discussions", f"""
     {md_html}
     <p style="font-size:12px;color:#888;margin:10px 0 0;">
       <a href="{SPC_BASE}/products/md/" style="color:#1a3a5c;">All active MDs on SPC &#8599;</a>
     </p>""")}
 
-  {card("🔗 SPC Links", btns)}
+  {card("&#128279; SPC Links", btns)}
 
   <!-- FOOTER -->
   <div style="background:#1a1f5e;margin:14px 14px 0;border-radius:8px;
@@ -459,7 +459,7 @@ def build_html(day1_text, day2_text, day3_text, cwo_risks, mds,
     </p>
     <p style="margin:0 0 14px;">
       <a href="{YT_URL}" style="color:#d4a843;font-size:13px;font-weight:700;text-decoration:none;">
-        ▶ YouTube.com/@MidwestMeteorology
+        &#9654; YouTube.com/@MidwestMeteorology
       </a>
     </p>
     <hr style="border:none;border-top:1px solid #2a3270;margin:12px 0;" />
@@ -469,7 +469,7 @@ def build_html(day1_text, day2_text, day3_text, cwo_risks, mds,
       <a href="{UNSUB_URL}" style="color:#aac4ee;">Click here to unsubscribe</a>
     </p>
     <p style="margin:8px 0 0;color:#3a4488;font-size:10px;">
-      Automated digest — always verify with official NWS/SPC products.
+      Automated digest -- always verify with official NWS/SPC products.
     </p>
   </div>
   <div style="height:18px;"></div>
@@ -478,7 +478,7 @@ def build_html(day1_text, day2_text, day3_text, cwo_risks, mds,
 </body></html>"""
 
 
-# ── SEND ───────────────────────────────────────────────────────────────────────
+# -- SEND -----------------------------------------------------------------------
 
 def send_email(subject, html_body, conv_img=None, tstm_img=None):
     msg = MIMEMultipart("related")
@@ -525,7 +525,7 @@ def send_email(subject, html_body, conv_img=None, tstm_img=None):
     print(f"[CWO] Email sent to {TO_EMAIL}")
 
 
-# ── MAIN ───────────────────────────────────────────────────────────────────────
+# -- MAIN -----------------------------------------------------------------------
 
 def main():
     print("[CWO] Fetching outlook texts...")
@@ -550,7 +550,7 @@ def main():
 
     now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     nat1    = get_national_category(day1_text)
-    subject = f"[CWO] SPC Brief — {now_str} | Day 1: {nat1} | CWO: {cwo_risks['cat']}"
+    subject = f"[CWO] SPC Brief -- {now_str} | Day 1: {nat1} | CWO: {cwo_risks['cat']}"
 
     html = build_html(day1_text, day2_text, day3_text, cwo_risks, mds,
                       conv_img is not None, tstm_img is not None)
