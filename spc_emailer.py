@@ -42,21 +42,31 @@ OUTLOOK_PAGES = {
     3: SPC_BASE + "/products/outlook/day3otlk.html",
 }
 
-# NOAA FeatureServer - CORRECT layer IDs (confirmed from NOAA docs)
-# 1 = Day 1 Categorical
-# 2 = Day 1 Probabilistic Tornado
-# 3 = Day 1 Probabilistic Hail
-# 4 = Day 1 Probabilistic Wind
+# NOAA FeatureServer layer IDs - determined from live query logs:
+# Layer 1 = Day 1 Categorical  (dn field = numeric: 2=TSTM,3=MRGL,4=SLGT,5=ENH,6=MDT,8=HIGH)
+# Layer 2 = Day 1 Prob Tornado (valid field = string "0.05", "0.10" etc)
+# Layer 3 = Day 1 Prob Wind    (confirmed returns features when wind threat exists)
+# Layer 4 = Day 1 Prob Hail    (confirmed 0 features when no hail threat)
 FEATURE_BASE = (
     "https://mapservices.weather.noaa.gov"
     "/vector/rest/services/outlooks/SPC_wx_outlks/FeatureServer"
 )
 LAYER_CAT  = 1
 LAYER_TORN = 2
-LAYER_HAIL = 3
-LAYER_WIND = 4
+LAYER_WIND = 3
+LAYER_HAIL = 4
 
 CAT_ORDER = ["HIGH", "MDT", "ENH", "SLGT", "MRGL", "TSTM"]
+
+# Categorical layer returns numeric dn values
+CAT_NUM_MAP = {
+    "2": "TSTM", "2.0": "TSTM",
+    "3": "MRGL", "3.0": "MRGL",
+    "4": "SLGT", "4.0": "SLGT",
+    "5": "ENH",  "5.0": "ENH",
+    "6": "MDT",  "6.0": "MDT",
+    "8": "HIGH", "8.0": "HIGH",
+}
 
 # label, html color circle entity, hex color
 CAT_META = {
@@ -203,13 +213,15 @@ def query_layer(layer_id):
 
 
 def best_cat_key(feats):
-    # Categorical layer uses 'dn' field with string values like MRGL, SLGT etc.
+    # Categorical layer returns numeric dn values - map to text keys
     found = set()
     for f in feats:
-        val = str(f.get("dn", f.get("DN", f.get("LABEL", "")))).upper().strip()
-        if val:
-            found.add(val)
-    print("[CWO] Cat values found: " + str(found))
+        raw = str(f.get("dn", f.get("DN", ""))).strip()
+        # Try numeric map first, then direct text match
+        mapped = CAT_NUM_MAP.get(raw, raw.upper())
+        if mapped:
+            found.add(mapped)
+    print("[CWO] Cat values found (raw->mapped): " + str(found))
     for lvl in CAT_ORDER:
         if lvl in found:
             return lvl
@@ -219,17 +231,25 @@ def best_cat_key(feats):
 def best_prob(feats, layer_name=""):
     vals = []
     for f in feats:
-        # Try multiple possible field names
-        for field in ["dn", "DN", "PROB", "prob", "label", "LABEL"]:
+        # Try all possible field names - prob layers use "valid" field
+        for field in ["valid", "dn", "DN", "PROB", "prob", "label", "LABEL"]:
             raw = str(f.get(field, "")).strip()
             if raw in PROB_VALUES:
                 vals.append(PROB_VALUES[raw])
                 break
+        else:
+            # Last resort: check all fields for a numeric prob value
+            for field, val in f.items():
+                raw = str(val).strip()
+                if raw in PROB_VALUES:
+                    vals.append(PROB_VALUES[raw])
+                    break
     if vals:
         best = max(vals)
         print("[CWO] " + layer_name + " best prob: " + str(best) + "%")
         return best
-    print("[CWO] " + layer_name + " no prob found. Fields: " + str(list(feats[0].keys()) if feats else []))
+    if feats:
+        print("[CWO] " + layer_name + " no prob found. All fields: " + str(feats[0]))
     return 0
 
 
@@ -241,8 +261,8 @@ def get_cwo_risks():
 
     cat_key = best_cat_key(cat_feats)
     torn    = best_prob(torn_feats, "Tornado")
-    hail    = best_prob(hail_feats, "Hail")
     wind    = best_prob(wind_feats, "Wind")
+    hail    = best_prob(hail_feats, "Hail")
 
     return {
         "cat_key": cat_key,
