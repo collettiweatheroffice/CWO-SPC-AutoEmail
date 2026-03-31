@@ -1,6 +1,6 @@
 # -*- coding: ascii -*-
 """
-CWO SPC Daily Outlook Emailer BETA v9.1
+CWO SPC Daily Outlook Emailer v9.1.2
 Colletti Weather Office - LOT / MKX / DVN
 "Nado Nomad's Convective Compass"
 """
