@@ -2,34 +2,31 @@ PROPRIETARY SOURCE CODE LICENSE
 Copyright (c) 2026 Jonathan Colletti. All Rights Reserved.
 
 1. DEFINITIONS
-   a. "Owner" refers to Jonathan Colletti.
-   b. "Authorized Entity" refers to the "Colletti Weather Office," a 
-      YouTube media channel and organization owned and operated 
-      exclusively by the Owner.
-   c. "Software" refers to all source code, documentation, and 
-      associated files within this repository.
+
+"Owner" refers to Jonathan Colletti.
+
+"Authorized Entity" refers to Colletti Weather Office, a sole proprietorship owned and operated exclusively by Jonathan Colletti.
+
+"Software" refers to all source code, documentation, and associated files within this repository.
 
 2. OWNERSHIP AND INTELLECTUAL PROPERTY
-The Software is the sole and exclusive intellectual property of the Owner. 
-This repository is provided for public viewing and educational review 
-purposes only. No title to or ownership of the Software is transferred 
-to any third party.
+
+The Software is the sole and exclusive intellectual property of the Owner. This repository is provided for public viewing and educational review purposes only. No title to or ownership of the Software is transferred to any third party.
 
 3. EXCLUSIVE GRANT OF USE
-The Owner hereby grants exclusive permission to himself and the 
-Authorized Entity (Colletti Weather Office) to use, modify, execute, 
-and broadcast the Software for automated alerting and weather reporting,
-currently under the name "Nado Nomad's Covective Compass."
+
+The Owner hereby grants exclusive permission to himself and the Authorized Entity (Colletti Weather Office) to use, modify, execute, and broadcast the Software for automated alerting and weather reporting, currently under the name "Nado Nomad's Convective Compass."
 
 4. RESTRICTIONS
-NO LICENSE is granted to any other person or entity. Any of the following 
-actions are strictly prohibited without prior written consent from the Owner:
-   a. Copying, redistributing, or sublicensing the Software.
-   b. Modifying or creating derivative works for public or commercial use.
-   c. Running or executing the Software on any system not owned by the Owner.
+
+NO LICENSE is granted to any other person or entity. Any of the following actions are strictly prohibited without prior written consent from the Owner:
+
+a. Copying, redistributing, or sublicensing the Software.
+
+b. Modifying or creating derivative works for public or commercial use.
+
+c. Running or executing the Software on any system not owned by the Owner or the Authorized Entity.
 
 5. DISCLAIMER OF WARRANTY
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS 
-OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY 
-OR FITNESS FOR A PARTICULAR PURPOSE. THE OWNER SHALL NOT BE LIABLE FOR 
-ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. THE OWNER SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
