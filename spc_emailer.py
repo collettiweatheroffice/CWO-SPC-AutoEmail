@@ -1,4 +1,4 @@
-# -*- coding: ascii -*-
+# -*- coding: utf-8 -*-
 """
 CWO SPC Daily Outlook Emailer v9.2 (FIXED)
 Colletti Weather Office
